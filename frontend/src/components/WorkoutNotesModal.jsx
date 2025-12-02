@@ -9,7 +9,7 @@ function WorkoutNotesModal({ appointment, onClose, onSuccess }) {
     const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/appointments/${appointment._id}`, {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/appointments/${appointment._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

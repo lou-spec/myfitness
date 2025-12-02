@@ -96,7 +96,7 @@ function TrainerDashboard({ user, setUser }) {
   const checkTrialStatus = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/appointments/stats/dashboard", {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/appointments/stats/dashboard`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
@@ -127,10 +127,10 @@ function TrainerDashboard({ user, setUser }) {
     try {
       const token = localStorage.getItem("token");
       const [appointmentsRes, paymentsRes] = await Promise.all([
-        fetch("https://myfitness-pkft.onrender.com/api/appointments/stats/dashboard", {
+        fetch(`https://myfitness-pkft.onrender.com/api/appointments/stats/dashboard`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
-        fetch("https://myfitness-pkft.onrender.com/api/payments/stats", {
+        fetch(`https://myfitness-pkft.onrender.com/api/payments/stats`, {
           headers: { Authorization: `Bearer ${token}` },
         })
       ]);
@@ -159,7 +159,7 @@ function TrainerDashboard({ user, setUser }) {
   const fetchClients = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/clients", {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/clients`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -172,7 +172,7 @@ function TrainerDashboard({ user, setUser }) {
   const fetchAssociatedClients = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/auth/users-clients", {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/auth/users-clients`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -191,7 +191,7 @@ function TrainerDashboard({ user, setUser }) {
   const fetchAppointments = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/appointments", {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/appointments`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -204,7 +204,7 @@ function TrainerDashboard({ user, setUser }) {
   const fetchPackages = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/packages", {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/packages`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -217,7 +217,7 @@ function TrainerDashboard({ user, setUser }) {
   const fetchPayments = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/payments", {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/payments`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -230,7 +230,7 @@ function TrainerDashboard({ user, setUser }) {
   const updateAppointmentStatus = async (appointmentId, status) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/appointments/${appointmentId}`, {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/appointments/${appointmentId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -254,7 +254,7 @@ function TrainerDashboard({ user, setUser }) {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/packages/${packageId}`, {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/packages/${packageId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -273,7 +273,7 @@ function TrainerDashboard({ user, setUser }) {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/clients/dissociate-user/${clientId}`, {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/clients/dissociate-user/${clientId}`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
       });

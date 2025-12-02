@@ -38,7 +38,7 @@ function ClientDashboard({ user, setUser }) {
     
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/auth/trainer/${user.trainer_id}`, {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/auth/trainer/${user.trainer_id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -53,7 +53,7 @@ function ClientDashboard({ user, setUser }) {
   const fetchAppointments = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/appointments/my", {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/appointments/my`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -86,7 +86,7 @@ function ClientDashboard({ user, setUser }) {
       }
       
       console.log("A buscar pacotes do trainer:", trainerId);
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/packages/trainer/${trainerId}`);
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/packages/trainer/${trainerId}`);
       const data = await res.json();
       console.log("Pacotes recebidos:", data);
       if (res.ok) setPackages(data);
@@ -103,7 +103,7 @@ function ClientDashboard({ user, setUser }) {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/appointments/${selectedAppointment._id}`, {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/appointments/${selectedAppointment._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -131,7 +131,7 @@ function ClientDashboard({ user, setUser }) {
   const cancelAppointment = async (cancellationReason) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/appointments/${appointmentToCancel._id}`, {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/appointments/${appointmentToCancel._id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

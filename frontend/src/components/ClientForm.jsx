@@ -14,7 +14,7 @@ function ClientForm({ onClose, onSuccess }) {
   const fetchAvailableUsers = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/auth/users-clients", {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/auth/users-clients`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -31,7 +31,7 @@ function ClientForm({ onClose, onSuccess }) {
     }
 
     const token = localStorage.getItem("token");
-    const res = await fetch("https://myfitness-pkft.onrender.com/api/clients/associate-user", {
+    const res = await fetch(`https://myfitness-pkft.onrender.com/api/clients/associate-user`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

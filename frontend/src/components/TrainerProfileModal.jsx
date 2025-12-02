@@ -11,7 +11,7 @@ function TrainerProfileModal({ trainerId, onClose }) {
   const fetchTrainerDetails = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/auth/trainer/${trainerId}`, {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/auth/trainer/${trainerId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();

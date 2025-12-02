@@ -15,7 +15,7 @@ function ProfileEditModal({ user, onClose, onSuccess }) {
     const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/auth/profile", {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/auth/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

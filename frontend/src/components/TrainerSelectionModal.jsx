@@ -12,7 +12,7 @@ function TrainerSelectionModal({ onClose, onSuccess }) {
 
   const fetchTrainers = async () => {
     try {
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/auth/trainers");
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/auth/trainers`);
       const data = await res.json();
       if (res.ok) {
         setTrainers(data);
@@ -32,7 +32,7 @@ function TrainerSelectionModal({ onClose, onSuccess }) {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://myfitness-pkft.onrender.com/api/auth/associate-trainer", {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/auth/associate-trainer`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

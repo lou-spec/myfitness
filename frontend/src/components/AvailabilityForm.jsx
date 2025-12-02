@@ -17,7 +17,7 @@ function AvailabilityForm({ onClose, onSuccess }) {
 
   const handleSubmit = async () => {
     const token = localStorage.getItem("token");
-    const res = await fetch("https://myfitness-pkft.onrender.com/api/availability", {
+    const res = await fetch(`https://myfitness-pkft.onrender.com/api/availability`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

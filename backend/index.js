@@ -62,6 +62,8 @@ const connectDB = async () => {
     });
     
     console.log("✅ MongoDB Atlas conectado com sucesso!");
+    console.log("📊 Database:", mongoose.connection.db.databaseName);
+    console.log("🔗 Host:", mongoose.connection.host);
   } catch (err) {
     console.error("❌ Erro ao conectar MongoDB:", err.message);
     console.error("💡 Verifique: 1) Connection string correta, 2) IP whitelisted, 3) Password correta");

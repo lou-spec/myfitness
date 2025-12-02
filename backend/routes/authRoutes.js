@@ -44,11 +44,17 @@ router.post("/register", async (req, res) => {
       userData.trial_warning_sent = false;
     }
 
+    console.log("📝 A criar utilizador:", { name, email, role: userRole });
     const user = await User.create(userData);
+    console.log("✅ Utilizador criado com sucesso:", user._id);
     
-    res.json({ msg: "Registado com sucesso" });
+    res.json({ 
+      msg: "Registado com sucesso",
+      userId: user._id,
+      role: user.role
+    });
   } catch (err) {
-    console.error("Erro no registo:", err);
+    console.error("❌ Erro no registo:", err);
     res.status(500).json({ msg: "Erro ao criar conta", error: err.message });
   }
 });

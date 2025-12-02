@@ -13,7 +13,7 @@ function ClientProfileSection({ clientId, onClose }) {
   const fetchClientDetails = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/auth/user/${clientId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/user/${clientId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -32,7 +32,7 @@ function ClientProfileSection({ clientId, onClose }) {
   const fetchClientAppointments = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/appointments/client/${clientId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/appointments/client/${clientId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -210,3 +210,4 @@ function ClientProfileSection({ clientId, onClose }) {
 }
 
 export default ClientProfileSection;
+

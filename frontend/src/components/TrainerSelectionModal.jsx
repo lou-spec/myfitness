@@ -12,7 +12,7 @@ function TrainerSelectionModal({ onClose, onSuccess }) {
 
   const fetchTrainers = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/auth/trainers");
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/trainers");
       const data = await res.json();
       if (res.ok) {
         setTrainers(data);
@@ -32,7 +32,7 @@ function TrainerSelectionModal({ onClose, onSuccess }) {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/auth/associate-trainer", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/associate-trainer", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -210,3 +210,4 @@ function TrainerSelectionModal({ onClose, onSuccess }) {
 }
 
 export default TrainerSelectionModal;
+

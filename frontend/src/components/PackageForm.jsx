@@ -16,8 +16,8 @@ function PackageForm({ onClose, onSuccess, editPackage = null }) {
     setLoading(true);
     const token = localStorage.getItem("token");
     const url = editPackage 
-      ? `http://localhost:5000/api/packages/${editPackage._id}`
-      : "http://localhost:5000/api/packages";
+      ? `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/packages/${editPackage._id}`
+      : `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/packages";
     
     const method = editPackage ? "PUT" : "POST";
 
@@ -116,3 +116,4 @@ function PackageForm({ onClose, onSuccess, editPackage = null }) {
 }
 
 export default PackageForm;
+

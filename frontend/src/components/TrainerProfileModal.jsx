@@ -11,7 +11,7 @@ function TrainerProfileModal({ trainerId, onClose }) {
   const fetchTrainerDetails = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/auth/trainer/${trainerId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/auth/trainer/${trainerId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -128,3 +128,4 @@ function TrainerProfileModal({ trainerId, onClose }) {
 }
 
 export default TrainerProfileModal;
+

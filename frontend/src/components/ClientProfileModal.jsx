@@ -13,7 +13,7 @@ function ClientProfileModal({ clientId, onClose }) {
   const fetchClientDetails = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/clients/${clientId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/clients/${clientId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -30,7 +30,7 @@ function ClientProfileModal({ clientId, onClose }) {
   const fetchClientAppointments = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/appointments/client/${clientId}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/appointments/client/${clientId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -173,3 +173,4 @@ function ClientProfileModal({ clientId, onClose }) {
 }
 
 export default ClientProfileModal;
+

@@ -97,3 +97,4 @@ function CancellationModal({ appointment, onClose, onConfirm }) {
 }
 
 export default CancellationModal;
+

@@ -15,7 +15,15 @@ import startTrialCheckScheduler from "./services/trialCheckScheduler.js";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+// CORS configurado para produção
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || 'https://myfitness-neon.vercel.app',
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Rotas
@@ -36,15 +44,27 @@ app.get("/", (req, res) => {
   res.json({ msg: "API Personal Trainer - MVP v1.0" });
 });
 
-// Conexão MongoDB
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => {
-    console.log("✅ MongoDB conectado");
+// Conexão MongoDB Atlas
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URL || process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("✅ MongoDB Atlas conectado");
+  } catch (err) {
+    console.error("❌ Erro ao conectar MongoDB:", err.message);
+    process.exit(1);
+  }
+};
+
+connectDB().then(() => {
     
     // Iniciar servidor
-    app.listen(process.env.PORT, () => {
-      console.log(`🚀 Servidor a correr na porta ${process.env.PORT}`);
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 Servidor a correr na porta ${PORT}`);
+      console.log(`🌍 Ambiente: ${process.env.NODE_ENV || 'development'}`);
       
       // Iniciar schedulers
       if (process.env.EMAIL_USER) {
@@ -56,5 +76,7 @@ mongoose
         console.log("⚠️ Sistema de emails desativado (configure EMAIL_USER no .env)");
       }
     });
-  })
-  .catch((err) => console.log("❌ Erro MongoDB:", err));
+}).catch((err) => {
+  console.error("❌ Erro fatal:", err);
+  process.exit(1);
+});

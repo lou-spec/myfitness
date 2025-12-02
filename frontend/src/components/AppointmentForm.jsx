@@ -23,7 +23,7 @@ function AppointmentForm({ clients, onClose, onSuccess }) {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
 
-    const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/appointments", {
+    const res = await fetch("https://myfitness-pkft.onrender.com/api/appointments", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -16,8 +16,8 @@ function PackageForm({ onClose, onSuccess, editPackage = null }) {
     setLoading(true);
     const token = localStorage.getItem("token");
     const url = editPackage 
-      ? `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/packages/${editPackage._id}`
-      : `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/packages";
+      ? "https://myfitness-pkft.onrender.com/api/packages/${editPackage._id}`
+      : `https://myfitness-pkft.onrender.com/api/packages";
     
     const method = editPackage ? "PUT" : "POST";
 

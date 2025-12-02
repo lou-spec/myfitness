@@ -23,7 +23,7 @@ function Dashboard({ user, setUser }) {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/appointments/stats/dashboard", {
+      const res = await fetch("https://myfitness-pkft.onrender.com/api/appointments/stats/dashboard", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -36,7 +36,7 @@ function Dashboard({ user, setUser }) {
   const fetchClients = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/clients", {
+      const res = await fetch("https://myfitness-pkft.onrender.com/api/clients", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -49,7 +49,7 @@ function Dashboard({ user, setUser }) {
   const fetchAppointments = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/appointments", {
+      const res = await fetch("https://myfitness-pkft.onrender.com/api/appointments", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();

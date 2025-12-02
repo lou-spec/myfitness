@@ -47,13 +47,24 @@ app.get("/", (req, res) => {
 // Conexão MongoDB Atlas
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URL || process.env.MONGODB_URI, {
+    const mongoUri = process.env.MONGO_URI || process.env.MONGO_URL || process.env.MONGODB_URI;
+    
+    if (!mongoUri) {
+      throw new Error("❌ MONGO_URI não definida! Configure a variável de ambiente.");
+    }
+    
+    console.log("🔄 Conectando ao MongoDB...");
+    console.log("📍 URI:", mongoUri.substring(0, 30) + "...");
+    
+    await mongoose.connect(mongoUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("✅ MongoDB Atlas conectado");
+    
+    console.log("✅ MongoDB Atlas conectado com sucesso!");
   } catch (err) {
     console.error("❌ Erro ao conectar MongoDB:", err.message);
+    console.error("💡 Verifique: 1) Connection string correta, 2) IP whitelisted, 3) Password correta");
     process.exit(1);
   }
 };

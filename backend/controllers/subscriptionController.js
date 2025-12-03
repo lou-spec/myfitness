@@ -6,51 +6,24 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 // Criar sessão de checkout do Stripe
 export const createCheckoutSession = async (req, res) => {
   try {
-    const { plan } = req.body; // 'basic', 'pro', ou 'premium'
+    const { plan } = req.body;
     const userId = req.user.id;
 
-    console.log('🔵 Criar checkout session - Plan:', plan, 'User:', userId);
-
     const user = await User.findById(userId);
-    if (!user) {
-      console.log('❌ Utilizador não encontrado:', userId);
-      return res.status(404).json({ message: 'Utilizador não encontrado' });
-    }
+    if (!user) return res.status(404).json({ message: 'Utilizador não encontrado' });
 
-    // Mapear planos para price IDs do Stripe
     const priceIds = {
       basic: process.env.STRIPE_BASIC_PRICE_ID,
       pro: process.env.STRIPE_PRO_PRICE_ID,
       premium: process.env.STRIPE_PREMIUM_PRICE_ID
     };
 
-    console.log('🔵 Price IDs configurados:', {
-      basic: priceIds.basic ? 'Definido' : '❌ NÃO DEFINIDO',
-      pro: priceIds.pro ? 'Definido' : '❌ NÃO DEFINIDO',
-      premium: priceIds.premium ? 'Definido' : '❌ NÃO DEFINIDO'
-    });
-
     const priceId = priceIds[plan];
     if (!priceId) {
-      console.log('❌ Price ID não encontrado para o plano:', plan);
       return res.status(400).json({ 
-        message: `Plano inválido ou Price ID não configurado para: ${plan}`,
-        debug: `Verifique a variável de ambiente STRIPE_${plan.toUpperCase()}_PRICE_ID no Render`
+        message: `Price ID não configurado: STRIPE_${plan.toUpperCase()}_PRICE_ID`
       });
     }
-
-    console.log('✅ Price ID selecionado:', priceId);
-
-    // Verificar se Stripe Secret Key está configurada
-    if (!process.env.STRIPE_SECRET_KEY) {
-      console.error('❌ STRIPE_SECRET_KEY não configurada!');
-      return res.status(500).json({ 
-        message: 'Erro de configuração do servidor',
-        debug: 'STRIPE_SECRET_KEY não está definida nas variáveis de ambiente'
-      });
-    }
-
-    console.log('🔵 Criando sessão de checkout no Stripe...');
     // Criar sessão de checkout
     const session = await stripe.checkout.sessions.create({
       customer_email: user.email,
@@ -71,17 +44,10 @@ export const createCheckoutSession = async (req, res) => {
       }
     });
 
-    console.log('✅ Sessão criada com sucesso! URL:', session.url);
     res.json({ sessionId: session.id, url: session.url });
   } catch (error) {
-    console.error('❌ Erro ao criar checkout:', error);
-    console.error('❌ Detalhes do erro:', error.message);
-    console.error('❌ Stack:', error.stack);
-    res.status(500).json({ 
-      message: 'Erro ao criar sessão de pagamento',
-      debug: error.message,
-      hint: 'Verifica os logs do Render para mais detalhes'
-    });
+    console.error('❌ Erro checkout:', error.message);
+    res.status(500).json({ message: 'Erro ao criar pagamento' });
   }
 };
 
@@ -147,9 +113,9 @@ async function handleCheckoutComplete(session) {
 
     await user.save();
 
-    console.log(`✅ Subscription activated for user ${user.email} - Plan: ${plan}`);
+    // Subscription activated
   } catch (error) {
-    console.error('❌ Error handling checkout complete:', error);
+    console.error('❌ Erro checkout complete:', error.message);
   }
 }
 
@@ -167,9 +133,9 @@ async function handleSubscriptionUpdate(subscription) {
     }
 
     await user.save();
-    console.log(`✅ Subscription updated for user ${user.email}`);
+    // Subscription updated
   } catch (error) {
-    console.error('❌ Error handling subscription update:', error);
+    console.error('❌ Erro subscription update:', error.message);
   }
 }
 
@@ -183,9 +149,9 @@ async function handleSubscriptionCancel(subscription) {
     user.subscription_plan = 'trial';
     
     await user.save();
-    console.log(`✅ Subscription canceled for user ${user.email}`);
+    // Subscription canceled
   } catch (error) {
-    console.error('❌ Error handling subscription cancel:', error);
+    console.error('❌ Erro subscription cancel:', error.message);
   }
 }
 
@@ -199,9 +165,9 @@ async function handlePaymentFailed(invoice) {
     await user.save();
 
     // TODO: Enviar email notificando sobre falha no pagamento
-    console.log(`❌ Payment failed for user ${user.email}`);
+    // Payment failed logged
   } catch (error) {
-    console.error('❌ Error handling payment failed:', error);
+    console.error('❌ Erro payment failed:', error.message);
   }
 }
 

@@ -12,7 +12,6 @@ const startTrialCheckScheduler = () => {
   // Roda diariamente às 10:00 AM
   cron.schedule('0 10 * * *', async () => {
     try {
-      console.log('🔍 Verificando trials de trainers...');
       
       const now = new Date();
       
@@ -28,18 +27,12 @@ const startTrialCheckScheduler = () => {
       });
 
       for (const trainer of trainersForWarning) {
-        const timeRemaining = trainer.trial_end_date - now;
-        const secondsRemaining = Math.floor(timeRemaining / 1000);
-        
-        console.log(`⚠️ Enviando email de aviso para ${trainer.email} (restam ${secondsRemaining}s)`);
-        
         try {
           await sendTrialWarningEmail(trainer);
           trainer.trial_warning_sent = true;
           await trainer.save();
-          console.log(`✅ Email de aviso enviado para ${trainer.email}`);
         } catch (emailErr) {
-          console.error(`❌ Erro ao enviar email para ${trainer.email}:`, emailErr);
+          console.error(`❌ Erro email aviso:`, emailErr.message);
         }
       }
 
@@ -52,15 +45,12 @@ const startTrialCheckScheduler = () => {
       });
 
       for (const trainer of expiredTrainers) {
-        console.log(`🚫 Trial expirado para ${trainer.email}`);
-        
         try {
           await sendTrialExpiredEmail(trainer);
           trainer.subscription_active = false;
           await trainer.save();
-          console.log(`✅ Email de expiração enviado e conta desativada: ${trainer.email}`);
         } catch (emailErr) {
-          console.error(`❌ Erro ao processar expiração para ${trainer.email}:`, emailErr);
+          console.error(`❌ Erro email expiração:`, emailErr.message);
         }
       }
 
@@ -69,11 +59,9 @@ const startTrialCheckScheduler = () => {
       }
       
     } catch (err) {
-      console.error('❌ Erro no cron job de verificação de trials:', err);
+      console.error('❌ Erro trial check:', err.message);
     }
   });
-
-  console.log('⏰ Scheduler de verificação de trials iniciado (10:00 AM diariamente)');
 };
 
 export default startTrialCheckScheduler;

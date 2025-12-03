@@ -9,13 +9,6 @@ export const sendContactMessage = async (req, res) => {
       return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
     }
 
-    // Log da mensagem de contacto (em produção, enviar email real)
-    console.log('📧 Nova mensagem de contacto:');
-    console.log(`Nome: ${name}`);
-    console.log(`Email: ${email}`);
-    console.log(`Assunto: ${subject}`);
-    console.log(`Mensagem: ${message}`);
-
     // TODO: Configurar nodemailer com credenciais reais em produção
     // const transporter = nodemailer.createTransporter({
     //   service: 'gmail',

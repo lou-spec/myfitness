@@ -128,16 +128,6 @@ router.patch("/:id", auth, async (req, res) => {
     const isTrainer = appointment.trainer_id.toString() === req.user.id;
     const isClient = user.role === 'client' && user.email === appointment.client_email;
     
-    console.log("🔍 Verificação de permissões:", {
-      userId: req.user.id,
-      userEmail: user.email,
-      userRole: user.role,
-      appointmentTrainerId: appointment.trainer_id.toString(),
-      appointmentClientEmail: appointment.client_email,
-      isTrainer,
-      isClient
-    });
-    
     if (!isTrainer && !isClient) {
       return res.status(403).json({ msg: "Não tens permissão para atualizar este agendamento" });
     }
@@ -158,47 +148,31 @@ router.patch("/:id", auth, async (req, res) => {
     if (process.env.EMAIL_USER) {
       const trainer = await User.findById(appointment.trainer_id).select("-password");
       
-      console.log("📧 Verificação de emails:", {
-        hasTrainer: !!trainer,
-        hasStatus: !!status,
-        status,
-        isClient,
-        hasCancellationReason: !!cancellation_reason
-      });
-      
       if (trainer && status) {
         if (status === "cancelled") {
-          console.log("✉️ Iniciando envio de emails de cancelamento...");
-          
-          // Se foi o cliente que cancelou, enviar email ao trainer
           if (isClient && cancellation_reason) {
-            console.log(`📤 Enviando email ao trainer: ${trainer.email}`);
             sendClientCancellationNotification(
               trainer.email,
               trainer.name,
               appointment,
               user,
               cancellation_reason
-            ).catch(err => console.error("❌ Erro ao enviar email ao trainer:", err));
-          } else {
-            console.log("⚠️ Email ao trainer não enviado:", { isClient, hasCancellationReason: !!cancellation_reason });
+            ).catch(err => console.error("❌ Erro email trainer:", err));
           }
           
-          // Sempre enviar email ao cliente sobre o cancelamento
-          console.log(`📤 Enviando email ao cliente: ${appointment.client_email}`);
           sendCancellationEmail(
             appointment.client_email, 
             appointment.client_name, 
             appointment, 
             trainer
-          ).catch(err => console.error("❌ Erro ao enviar email ao cliente:", err));
+          ).catch(err => console.error("❌ Erro email cliente:", err));
         } else if (status === "done") {
           sendSessionCompletedEmail(
             appointment.client_email, 
             appointment.client_name, 
             appointment, 
             trainer
-          ).catch(err => console.error("Erro ao enviar email:", err));
+          ).catch(err => console.error("❌ Erro email:", err));
         }
       }
     }

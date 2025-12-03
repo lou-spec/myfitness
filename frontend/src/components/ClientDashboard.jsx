@@ -80,15 +80,10 @@ function ClientDashboard({ user, setUser }) {
   const fetchPackages = async () => {
     try {
       const trainerId = trainer?._id || user.trainer_id;
-      if (!trainerId) {
-        console.log("Sem trainer_id para buscar pacotes");
-        return;
-      }
+      if (!trainerId) return;
       
-      console.log("A buscar pacotes do trainer:", trainerId);
       const res = await fetch(`https://myfitness-pkft.onrender.com/api/packages/trainer/${trainerId}`);
       const data = await res.json();
-      console.log("Pacotes recebidos:", data);
       if (res.ok) setPackages(data);
     } catch (err) {
       console.error("Erro ao buscar pacotes:", err);

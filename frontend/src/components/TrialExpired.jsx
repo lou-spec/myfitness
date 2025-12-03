@@ -55,8 +55,6 @@ function TrialExpired() {
   const handleUpgrade = async (planId) => {
     const token = localStorage.getItem('token');
     
-    console.log('🔵 TrialExpired - Iniciando pagamento:', { planId, hasToken: !!token });
-    
     if (!token) {
       alert('Por favor, faz login primeiro.');
       navigate('/login');
@@ -64,7 +62,6 @@ function TrialExpired() {
     }
 
     try {
-      console.log('🔵 Enviando requisição para criar checkout...');
       const res = await fetch(`https://myfitness-pkft.onrender.com/api/subscription/create-checkout-session`, {
         method: "POST",
         headers: {
@@ -74,20 +71,15 @@ function TrialExpired() {
         body: JSON.stringify({ plan: planId }),
       });
 
-      console.log('🔵 Resposta recebida:', res.status);
       const data = await res.json();
-      console.log('🔵 Dados da resposta:', data);
 
       if (res.ok && data.url) {
-        console.log('✅ Redirecionando para Stripe:', data.url);
         window.location.href = data.url;
       } else {
-        console.error('❌ Erro na resposta:', data);
-        alert(data.message || data.debug || "Erro ao processar pagamento. Verifica os logs do Render.");
+        alert(data.message || "Erro ao processar pagamento");
       }
     } catch (error) {
-      console.error("❌ Erro ao criar checkout:", error);
-      alert("Erro ao processar pagamento. Verifica a consola do browser (F12).");
+      alert("Erro ao processar pagamento");
     }
   };
 
@@ -100,20 +92,18 @@ function TrialExpired() {
     try {
       const res = await fetch('https://myfitness-pkft.onrender.com/api/debug/check-env');
       const data = await res.json();
-      console.log('🔧 Configuração do Servidor:', data);
       
       const missingVars = Object.entries(data.environment)
         .filter(([key, value]) => value.includes('❌'))
         .map(([key]) => key);
       
       if (missingVars.length > 0) {
-        alert(`⚠️ Variáveis não configuradas no Render:\n\n${missingVars.join('\n')}\n\nVerifica o Dashboard do Render!`);
+        alert(`⚠️ Variáveis em falta:\n\n${missingVars.join('\n')}`);
       } else {
-        alert('✅ Todas as variáveis estão configuradas!\n\nSe o pagamento não funciona, verifica:\n1. Logs do Render\n2. Console do Browser (F12)\n3. Price IDs no Stripe Dashboard');
+        alert('✅ Configuração OK!');
       }
     } catch (error) {
-      console.error('Erro ao verificar config:', error);
-      alert('Erro ao verificar configuração do servidor.');
+      alert('Erro ao verificar configuração');
     }
   };
 

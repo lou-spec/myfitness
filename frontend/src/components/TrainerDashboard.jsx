@@ -65,9 +65,7 @@ function TrainerDashboard({ user, setUser }) {
     };
   }, []);
 
-  // Função helper para forçar logout quando trial expira
   const handleTrialExpired = () => {
-    console.log("⏰ Trial expirado - forçando logout!");
     localStorage.clear();
     setUser(null);
     alert("⏰ Seu período experimental expirou! Redirecionando para upgrade...");

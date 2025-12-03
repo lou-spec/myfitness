@@ -17,12 +17,10 @@ router.get("/", authMiddleware, async (req, res) => {
 // GET packages públicos de um trainer (com dados do trainer)
 router.get("/trainer/:trainerId", async (req, res) => {
   try {
-    console.log("A buscar pacotes do trainer:", req.params.trainerId);
     const packages = await Package.find({ 
       trainer_id: req.params.trainerId, 
       active: true 
     }).populate('trainer_id', 'name email photo_url city specialties bio price_per_session phone');
-    console.log("Pacotes encontrados:", packages.length);
     res.json(packages);
   } catch (err) {
     console.error("Erro ao buscar pacotes:", err);

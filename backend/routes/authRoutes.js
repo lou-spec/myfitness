@@ -44,9 +44,7 @@ router.post("/register", async (req, res) => {
       userData.trial_warning_sent = false;
     }
 
-    console.log("📝 A criar utilizador:", { name, email, role: userRole });
     const user = await User.create(userData);
-    console.log("✅ Utilizador criado com sucesso:", user._id);
     
     res.json({ 
       msg: "Registado com sucesso",
@@ -64,27 +62,17 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    console.log("🔵 Tentativa de login:", email);
-
     const user = await User.findOne({ email });
-    if (!user) {
-      console.log("❌ Utilizador não encontrado:", email);
-      return res.status(400).json({ msg: "Conta não existe" });
-    }
+    if (!user) return res.status(400).json({ msg: "Conta não existe" });
 
     const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      console.log("❌ Password incorreta para:", email);
-      return res.status(400).json({ msg: "Password inválida" });
-    }
+    if (!match) return res.status(400).json({ msg: "Password inválida" });
 
     // Se for trainer, verifica se o trial expirou
     if (user.role === 'trainer' && user.subscription_plan === 'trial') {
       const now = new Date();
       if (user.trial_end_date && now > user.trial_end_date) {
         // Trial expirado - permite login mas redireciona para trial-expired
-        console.log("⚠️ Trial expirado para:", email, "- Trial End:", user.trial_end_date);
-        
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || "segredo123", {
           expiresIn: "2d",
         });
@@ -105,7 +93,6 @@ router.post("/login", async (req, res) => {
       }
     }
 
-    console.log("✅ Login bem-sucedido para:", email);
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || "segredo123", {
       expiresIn: "2d",
     });

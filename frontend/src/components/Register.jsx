@@ -66,17 +66,14 @@ function Register({ setPage }) {
             navigate("/login");
           }
         } catch (err) {
-          console.error("Erro ao criar checkout:", err);
           alert("Erro ao processar pagamento. Faz login e vai a Pagamentos.");
           navigate("/login");
         }
       } else {
-        // Registo normal com trial
         alert("✅ Conta criada com sucesso! Tens 14 dias de teste grátis.");
         navigate("/login");
       }
     } catch (err) {
-      console.error("Erro:", err);
       alert("❌ Erro ao conectar ao servidor. Verifica se o backend está a correr!");
     }
   };

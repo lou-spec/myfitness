@@ -1,18 +1,9 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 
-// Garantir que .env é carregado
 dotenv.config();
 
-// Log das variáveis de ambiente (para debug)
-console.log("📧 Email Config:", {
-  host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
-  user: process.env.EMAIL_USER ? "✓ Configurado" : "✗ Não configurado",
-  pass: process.env.EMAIL_PASS ? "✓ Configurado" : "✗ Não configurado"
-});
-
-// Configuração do transporter (usar variáveis de ambiente em produção)
+// Configuração do transporter
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST || "smtp.gmail.com",
   port: parseInt(process.env.EMAIL_PORT) || 587,
@@ -187,9 +178,9 @@ export const sendClientWelcomeEmail = async (clientEmail, clientName, trainer) =
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log(`✅ Email de boas-vindas enviado para ${clientEmail}`);
+    // Email enviado
   } catch (error) {
-    console.error(`❌ Erro ao enviar email para ${clientEmail}:`, error);
+    console.error(`❌ Erro email boas-vindas:`, error.message);
   }
 };
 
@@ -236,9 +227,9 @@ export const sendTrainerNotification = async (trainerEmail, trainerName, clientN
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log(`✅ Email de notificação enviado para ${trainerEmail}`);
+    // Email enviado
   } catch (error) {
-    console.error(`❌ Erro ao enviar email para ${trainerEmail}:`, error);
+    console.error(`❌ Erro notificação trainer:`, error.message);
   }
 };
 
@@ -307,9 +298,9 @@ export const sendAppointmentReminder = async (clientEmail, clientName, appointme
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log(`✅ Lembrete enviado para ${clientEmail}`);
+    // Email enviado
   } catch (error) {
-    console.error(`❌ Erro ao enviar lembrete:`, error);
+    console.error(`❌ Erro lembrete:`, error.message);
   }
 };
 
@@ -366,9 +357,9 @@ export const sendAppointmentConfirmation = async (clientEmail, clientName, appoi
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log(`✅ Confirmação enviada para ${clientEmail}`);
+    // Email enviado
   } catch (error) {
-    console.error(`❌ Erro ao enviar confirmação:`, error);
+    console.error(`❌ Erro confirmação:`, error.message);
   }
 };
 
@@ -421,7 +412,7 @@ export const sendCancellationEmail = async (clientEmail, clientName, appointment
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log(`✅ Email de cancelamento enviado para ${clientEmail}`);
+    // Email enviado
   } catch (error) {
     console.error(`❌ Erro ao enviar email:`, error);
   }
@@ -499,7 +490,7 @@ export const sendClientCancellationNotification = async (trainerEmail, trainerNa
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log(`✅ Email de notificação de cancelamento enviado para ${trainerEmail}`);
+    // Email enviado
   } catch (error) {
     console.error(`❌ Erro ao enviar email:`, error);
   }
@@ -552,7 +543,7 @@ export const sendSessionCompletedEmail = async (clientEmail, clientName, appoint
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log(`✅ Email de conclusão enviado para ${clientEmail}`);
+    // Email enviado
   } catch (error) {
     console.error(`❌ Erro ao enviar email:`, error);
   }
@@ -618,7 +609,7 @@ export const sendTrialWarningEmail = async (trainer) => {
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log(`✅ Email de aviso de trial enviado para ${trainer.email}`);
+    // Email enviado
   } catch (error) {
     console.error(`❌ Erro ao enviar email de aviso:`, error);
     throw error;
@@ -685,7 +676,7 @@ export const sendTrialExpiredEmail = async (trainer) => {
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log(`✅ Email de trial expirado enviado para ${trainer.email}`);
+    // Email enviado
   } catch (error) {
     console.error(`❌ Erro ao enviar email de expiração:`, error);
     throw error;

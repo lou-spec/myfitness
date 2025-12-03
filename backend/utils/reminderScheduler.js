@@ -45,14 +45,10 @@ export const startReminderScheduler = () => {
           );
         }
       }
-
-      console.log("✅ Lembretes enviados com sucesso!");
     } catch (error) {
-      console.error("❌ Erro ao enviar lembretes:", error);
+      console.error("❌ Erro lembretes:", error.message);
     }
   });
-
-  console.log("⏰ Scheduler de lembretes iniciado (10:00 AM diariamente)");
 };
 
 // Função para enviar lembretes manualmente (teste)

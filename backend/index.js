@@ -18,40 +18,20 @@ dotenv.config();
 
 const app = express();
 
-// CORS configurado para produção - mais permissivo
-const allowedOrigins = [
-  'https://myfitness-neon.vercel.app',
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'http://127.0.0.1:5173'
-];
-
+// CORS otimizado para produção
 const corsOptions = {
-  origin: function (origin, callback) {
-    // Permite requests sem origin (como Postman, apps mobile, etc)
-    if (!origin) return callback(null, true);
-    
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.FRONTEND_URL === origin) {
-      callback(null, true);
-    } else {
-      console.log('⚠️ CORS bloqueou origem:', origin);
-      callback(null, true); // Permite temporariamente para debug
-    }
-  },
+  origin: [
+    process.env.FRONTEND_URL,
+    'https://myfitness-neon.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:3000'
+  ].filter(Boolean),
   credentials: true,
-  optionsSuccessStatus: 200,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  optionsSuccessStatus: 200
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
-
-// Log de todas as requests
-app.use((req, res, next) => {
-  console.log(`📨 ${req.method} ${req.path} - Origin: ${req.headers.origin || 'none'}`);
-  next();
-});
 
 // Rotas
 app.use("/api/auth", authRoutes);
@@ -86,20 +66,14 @@ const connectDB = async () => {
     if (!mongoUri.includes('mongodb.net/') || mongoUri.match(/mongodb\.net\/\?/)) {
       mongoUri = mongoUri.replace('mongodb.net/?', 'mongodb.net/test?');
       mongoUri = mongoUri.replace('mongodb.net/', 'mongodb.net/test');
-      console.log("⚠️ Database não especificada na URI, usando 'test' como padrão");
     }
-    
-    console.log("🔄 Conectando ao MongoDB...");
-    console.log("📍 URI:", mongoUri.substring(0, 30) + "...");
     
     await mongoose.connect(mongoUri, {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
+      useUnifiedTopology: true
     });
     
-    console.log("✅ MongoDB Atlas conectado com sucesso!");
-    console.log("📊 Database:", mongoose.connection.db.databaseName);
-    console.log("🔗 Host:", mongoose.connection.host);
+    console.log("✅ MongoDB conectado:", mongoose.connection.db.databaseName);
   } catch (err) {
     console.error("❌ Erro ao conectar MongoDB:", err.message);
     console.error("💡 Verifique: 1) Connection string correta, 2) IP whitelisted, 3) Password correta");
@@ -112,17 +86,11 @@ connectDB().then(() => {
     // Iniciar servidor
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, '0.0.0.0', () => {
-      console.log(`🚀 Servidor a correr na porta ${PORT}`);
-      console.log(`🌍 Ambiente: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`🚀 Servidor na porta ${PORT}`);
       
-      // Iniciar schedulers
       if (process.env.EMAIL_USER) {
         startReminderScheduler();
         startTrialCheckScheduler();
-        console.log("📧 Sistema de emails ativado");
-        console.log("⏰ Verificação de trials iniciada");
-      } else {
-        console.log("⚠️ Sistema de emails desativado (configure EMAIL_USER no .env)");
       }
     });
 }).catch((err) => {

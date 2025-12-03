@@ -7,7 +7,7 @@ function TrialExpired() {
     {
       name: 'Básico',
       price: '15',
-      clientLimit: 'Até 20 clientes',
+      clientLimit: 'Até 10 clientes',
       features: [
         '✅ Dashboard com estatísticas',
         '✅ Gestão de clientes',
@@ -21,8 +21,8 @@ function TrialExpired() {
     },
     {
       name: 'Pro',
-      price: '30',
-      clientLimit: 'Clientes ilimitados',
+      price: '25',
+      clientLimit: 'Até 30 clientes',
       features: [
         '✅ Tudo do Básico',
         '✅ Pacotes de treino',
@@ -37,7 +37,7 @@ function TrialExpired() {
     },
     {
       name: 'Premium',
-      price: '50',
+      price: '40',
       clientLimit: 'Clientes ilimitados',
       features: [
         '✅ Tudo do Pro',
@@ -52,11 +52,36 @@ function TrialExpired() {
     }
   ];
 
-  const handleUpgrade = (planId) => {
-    // Salva plano selecionado
-    localStorage.setItem('selectedPlan', planId);
-    alert(`Plano ${planId} selecionado! Integração de pagamento será adicionada em breve.`);
-    // TODO: Integrar com Stripe/PayPal
+  const handleUpgrade = async (planId) => {
+    const token = localStorage.getItem('token');
+    
+    if (!token) {
+      alert('Por favor, faz login primeiro.');
+      navigate('/login');
+      return;
+    }
+
+    try {
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/subscription/create-checkout-session`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ plan: planId }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.url) {
+        window.location.href = data.url;
+      } else {
+        alert(data.message || "Erro ao processar pagamento");
+      }
+    } catch (error) {
+      console.error("Erro ao criar checkout:", error);
+      alert("Erro ao processar pagamento. Tenta novamente.");
+    }
   };
 
   const handleBack = () => {
@@ -244,7 +269,7 @@ function TrialExpired() {
                   }
                 }}
               >
-                {plan.popular ? '🚀 Fazer Upgrade' : 'Selecionar Plano'}
+                💳 PAGAR E ATIVAR AGORA
               </button>
             </div>
           ))}

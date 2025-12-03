@@ -31,8 +31,50 @@ function Register({ setPage }) {
         return alert(data.msg || "Erro ao criar conta");
       }
 
-      alert("✅ Conta criada com sucesso!");
-      navigate("/login");
+      // Verifica se é pagamento direto
+      const directPayment = localStorage.getItem('directPayment');
+      const selectedPlan = localStorage.getItem('selectedPlan');
+
+      if (directPayment === 'true' && selectedPlan) {
+        // Login automático e redireciona para pagamento
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        
+        // Limpa flags
+        localStorage.removeItem('directPayment');
+        localStorage.removeItem('selectedPlan');
+
+        alert("✅ Conta criada! Serás redirecionado para o pagamento...");
+        
+        // Cria checkout session
+        try {
+          const checkoutRes = await fetch(`https://myfitness-pkft.onrender.com/api/subscription/create-checkout-session`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${data.token}`,
+            },
+            body: JSON.stringify({ plan: selectedPlan }),
+          });
+
+          const checkoutData = await checkoutRes.json();
+
+          if (checkoutRes.ok && checkoutData.url) {
+            window.location.href = checkoutData.url;
+          } else {
+            alert("Erro ao processar pagamento. Podes fazer login e tentar novamente.");
+            navigate("/login");
+          }
+        } catch (err) {
+          console.error("Erro ao criar checkout:", err);
+          alert("Erro ao processar pagamento. Faz login e vai a Pagamentos.");
+          navigate("/login");
+        }
+      } else {
+        // Registo normal com trial
+        alert("✅ Conta criada com sucesso! Tens 14 dias de teste grátis.");
+        navigate("/login");
+      }
     } catch (err) {
       console.error("Erro:", err);
       alert("❌ Erro ao conectar ao servidor. Verifica se o backend está a correr!");

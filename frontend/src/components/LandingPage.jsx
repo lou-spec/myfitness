@@ -158,10 +158,18 @@ function LandingPage() {
     }
   ];
 
-  const handleGetStarted = (planId) => {
-    // Armazena o plano selecionado no localStorage
-    localStorage.setItem('selectedPlan', planId);
-    navigate('/register');
+  const handleGetStarted = (planId, directPayment = false) => {
+    if (directPayment) {
+      // Pagamento direto - redireciona para registo com flag de pagamento
+      localStorage.setItem('selectedPlan', planId);
+      localStorage.setItem('directPayment', 'true');
+      navigate('/register');
+    } else {
+      // Trial gratuito - registo normal
+      localStorage.removeItem('selectedPlan');
+      localStorage.removeItem('directPayment');
+      navigate('/register');
+    }
   };
 
   const scrollToSection = (sectionId) => {
@@ -656,7 +664,7 @@ function LandingPage() {
                 </div>
 
                 <button
-                  onClick={() => handleGetStarted(plan.id)}
+                  onClick={() => handleGetStarted(plan.id, true)}
                   style={{
                     width: '100%',
                     padding: '16px',
@@ -684,7 +692,7 @@ function LandingPage() {
                     }
                   }}
                 >
-                  {plan.popular ? '🚀 Começar Agora' : 'Selecionar Plano'}
+                  💳 PAGAR E ATIVAR AGORA
                 </button>
               </div>
             ))}

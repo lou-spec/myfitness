@@ -10,6 +10,7 @@ import packageRoutes from "./routes/packageRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import emailRoutes from "./routes/emailRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
+import debugRoutes from "./routes/debugRoutes.js";
 import { startReminderScheduler } from "./utils/reminderScheduler.js";
 import startTrialCheckScheduler from "./services/trialCheckScheduler.js";
 
@@ -36,6 +37,7 @@ app.use("/api/packages", packageRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/email", emailRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/debug", debugRoutes);
 
 // Rota especial para webhook do Stripe (antes do express.json())
 import subscriptionRoutes from "./routes/subscriptionRoutes.js";

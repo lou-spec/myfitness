@@ -41,6 +41,16 @@ export const createCheckoutSession = async (req, res) => {
 
     console.log('✅ Price ID selecionado:', priceId);
 
+    // Verificar se Stripe Secret Key está configurada
+    if (!process.env.STRIPE_SECRET_KEY) {
+      console.error('❌ STRIPE_SECRET_KEY não configurada!');
+      return res.status(500).json({ 
+        message: 'Erro de configuração do servidor',
+        debug: 'STRIPE_SECRET_KEY não está definida nas variáveis de ambiente'
+      });
+    }
+
+    console.log('🔵 Criando sessão de checkout no Stripe...');
     // Criar sessão de checkout
     const session = await stripe.checkout.sessions.create({
       customer_email: user.email,
@@ -61,10 +71,17 @@ export const createCheckoutSession = async (req, res) => {
       }
     });
 
+    console.log('✅ Sessão criada com sucesso! URL:', session.url);
     res.json({ sessionId: session.id, url: session.url });
   } catch (error) {
     console.error('❌ Erro ao criar checkout:', error);
-    res.status(500).json({ message: 'Erro ao criar sessão de pagamento' });
+    console.error('❌ Detalhes do erro:', error.message);
+    console.error('❌ Stack:', error.stack);
+    res.status(500).json({ 
+      message: 'Erro ao criar sessão de pagamento',
+      debug: error.message,
+      hint: 'Verifica os logs do Render para mais detalhes'
+    });
   }
 };
 

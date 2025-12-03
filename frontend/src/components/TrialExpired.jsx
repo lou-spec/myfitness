@@ -55,6 +55,8 @@ function TrialExpired() {
   const handleUpgrade = async (planId) => {
     const token = localStorage.getItem('token');
     
+    console.log('🔵 TrialExpired - Iniciando pagamento:', { planId, hasToken: !!token });
+    
     if (!token) {
       alert('Por favor, faz login primeiro.');
       navigate('/login');
@@ -62,6 +64,7 @@ function TrialExpired() {
     }
 
     try {
+      console.log('🔵 Enviando requisição para criar checkout...');
       const res = await fetch(`https://myfitness-pkft.onrender.com/api/subscription/create-checkout-session`, {
         method: "POST",
         headers: {
@@ -71,22 +74,47 @@ function TrialExpired() {
         body: JSON.stringify({ plan: planId }),
       });
 
+      console.log('🔵 Resposta recebida:', res.status);
       const data = await res.json();
+      console.log('🔵 Dados da resposta:', data);
 
       if (res.ok && data.url) {
+        console.log('✅ Redirecionando para Stripe:', data.url);
         window.location.href = data.url;
       } else {
-        alert(data.message || "Erro ao processar pagamento");
+        console.error('❌ Erro na resposta:', data);
+        alert(data.message || data.debug || "Erro ao processar pagamento. Verifica os logs do Render.");
       }
     } catch (error) {
-      console.error("Erro ao criar checkout:", error);
-      alert("Erro ao processar pagamento. Tenta novamente.");
+      console.error("❌ Erro ao criar checkout:", error);
+      alert("Erro ao processar pagamento. Verifica a consola do browser (F12).");
     }
   };
 
   const handleBack = () => {
     localStorage.clear();
     navigate('/');
+  };
+
+  const checkServerConfig = async () => {
+    try {
+      const res = await fetch('https://myfitness-pkft.onrender.com/api/debug/check-env');
+      const data = await res.json();
+      console.log('🔧 Configuração do Servidor:', data);
+      
+      const missingVars = Object.entries(data.environment)
+        .filter(([key, value]) => value.includes('❌'))
+        .map(([key]) => key);
+      
+      if (missingVars.length > 0) {
+        alert(`⚠️ Variáveis não configuradas no Render:\n\n${missingVars.join('\n')}\n\nVerifica o Dashboard do Render!`);
+      } else {
+        alert('✅ Todas as variáveis estão configuradas!\n\nSe o pagamento não funciona, verifica:\n1. Logs do Render\n2. Console do Browser (F12)\n3. Price IDs no Stripe Dashboard');
+      }
+    } catch (error) {
+      console.error('Erro ao verificar config:', error);
+      alert('Erro ao verificar configuração do servidor.');
+    }
   };
 
   return (
@@ -277,29 +305,53 @@ function TrialExpired() {
 
         {/* Footer */}
         <div style={{ textAlign: 'center' }}>
-          <button
-            onClick={handleBack}
-            style={{
-              padding: '12px 30px',
-              fontSize: '16px',
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              borderRadius: '8px',
-              color: 'rgba(255,255,255,0.6)',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.background = 'rgba(255,255,255,0.1)';
-              e.target.style.color = '#fff';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.background = 'rgba(255,255,255,0.05)';
-              e.target.style.color = 'rgba(255,255,255,0.6)';
-            }}
-          >
-            ← Voltar ao Início
-          </button>
+          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginBottom: '20px' }}>
+            <button
+              onClick={checkServerConfig}
+              style={{
+                padding: '12px 30px',
+                fontSize: '16px',
+                background: 'rgba(220, 20, 60, 0.1)',
+                border: '1px solid rgba(220, 20, 60, 0.3)',
+                borderRadius: '8px',
+                color: '#dc143c',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.background = 'rgba(220, 20, 60, 0.2)';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.background = 'rgba(220, 20, 60, 0.1)';
+              }}
+            >
+              🔧 Verificar Configuração
+            </button>
+
+            <button
+              onClick={handleBack}
+              style={{
+                padding: '12px 30px',
+                fontSize: '16px',
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.2)',
+                borderRadius: '8px',
+                color: 'rgba(255,255,255,0.6)',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
+              onMouseOver={(e) => {
+                e.target.style.background = 'rgba(255,255,255,0.1)';
+                e.target.style.color = '#fff';
+              }}
+              onMouseOut={(e) => {
+                e.target.style.background = 'rgba(255,255,255,0.05)';
+                e.target.style.color = 'rgba(255,255,255,0.6)';
+              }}
+            >
+              ← Voltar ao Início
+            </button>
+          </div>
 
           <p style={{
             marginTop: '30px',

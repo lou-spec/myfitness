@@ -5,6 +5,7 @@ import App from './App'
 import LandingPage from './components/LandingPage'
 import TrialExpired from './components/TrialExpired'
 import SubscriptionPage from './components/SubscriptionPage'
+import PaymentSuccess from './components/PaymentSuccess'
 import TermsPage from './components/TermsPage'
 import PrivacyPage from './components/PrivacyPage'
 import ContactPage from './components/ContactPage'
@@ -21,6 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/dashboard" element={<App page="dashboard" />} />
         <Route path="/trial-expired" element={<TrialExpired />} />
         <Route path="/subscription" element={<SubscriptionPage />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/contact" element={<ContactPage />} />

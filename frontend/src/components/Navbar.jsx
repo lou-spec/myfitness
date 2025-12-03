@@ -37,111 +37,96 @@ function Navbar({ user, setUser }) {
 
   return (
     <nav className="navbar">
-      <div className="navbar-container">
-        <div className="navbar-logo" onClick={() => navigate("/dashboard")}>
-          <span className="logo-icon">💪</span>
-          <span className="logo-text">MyFitness</span>
-        </div>
+      <div className="navbar-logo" onClick={() => navigate("/dashboard")}>
+        💪 MyFitness
+      </div>
 
-        <div className="navbar-menu">
-          <button
-            className="navbar-link"
-            onClick={() => navigate("/dashboard")}
-          >
-            📊 Dashboard
-          </button>
+      <ul className="navbar-nav">
+        <li>
+          <a onClick={() => navigate("/dashboard")} style={{ cursor: 'pointer' }}>
+            Dashboard
+          </a>
+        </li>
 
-          {user?.role === "trainer" && (
-            <button
-              className="navbar-link"
-              onClick={() => navigate("/subscription")}
-            >
-              💳 Pagamentos
-            </button>
+        {user?.role === "trainer" && (
+          <li>
+            <a onClick={() => navigate("/subscription")} style={{ cursor: 'pointer' }}>
+              Pagamentos
+            </a>
+          </li>
+        )}
+
+        <li>
+          <a onClick={() => navigate("/faq")} style={{ cursor: 'pointer' }}>
+            FAQ
+          </a>
+        </li>
+
+        <li>
+          <a onClick={() => navigate("/contact")} style={{ cursor: 'pointer' }}>
+            Contacto
+          </a>
+        </li>
+      </ul>
+
+      <div className="navbar-user" ref={dropdownRef}>
+        <button
+          className="navbar-user-button"
+          onClick={() => setShowDropdown(!showDropdown)}
+        >
+          {user?.photo_url ? (
+            <img src={user.photo_url} alt={user.name} className="user-avatar" />
+          ) : (
+            <div className="avatar-initials">{getInitials(user?.name)}</div>
           )}
+          <span>{user?.name?.split(' ')[0]}</span>
+        </button>
 
-          <button className="navbar-link" onClick={() => navigate("/faq")}>
-            ❓ FAQ
-          </button>
-
-          <button className="navbar-link" onClick={() => navigate("/contact")}>
-            📧 Contacto
-          </button>
-        </div>
-
-        <div className="navbar-user" ref={dropdownRef}>
-          <div
-            className="user-avatar"
-            onClick={() => setShowDropdown(!showDropdown)}
-          >
-            {user?.photo_url ? (
-              <img src={user.photo_url} alt={user.name} />
-            ) : (
-              <div className="avatar-initials">{getInitials(user?.name)}</div>
+        {showDropdown && (
+          <div className="dropdown-menu">
+            {user?.role === "trainer" && (
+              <button
+                className="dropdown-item"
+                onClick={() => {
+                  setShowDropdown(false);
+                  navigate("/subscription");
+                }}
+              >
+                💳 Minha Subscrição
+              </button>
             )}
+
+            <button
+              className="dropdown-item"
+              onClick={() => {
+                setShowDropdown(false);
+                navigate("/terms");
+              }}
+            >
+              📄 Termos de Uso
+            </button>
+
+            <button
+              className="dropdown-item"
+              onClick={() => {
+                setShowDropdown(false);
+                navigate("/privacy");
+              }}
+            >
+              🔒 Privacidade
+            </button>
+
+            <button
+              className="dropdown-item"
+              onClick={() => {
+                setShowDropdown(false);
+                handleLogout();
+              }}
+            >
+              🚪 Sair
+            </button>
           </div>
-
-          {showDropdown && (
-            <div className="dropdown-menu">
-              <div className="dropdown-header">
-                <strong>{user?.name}</strong>
-                <span className="user-email">{user?.email}</span>
-                <span className="user-role">
-                  {user?.role === "trainer" ? "🏋️ Trainer" : "👤 Cliente"}
-                </span>
-              </div>
-
-              <div className="dropdown-divider"></div>
-
-              {user?.role === "trainer" && (
-                <>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => {
-                      setShowDropdown(false);
-                      navigate("/subscription");
-                    }}
-                  >
-                    💳 Minha Subscrição
-                  </button>
-                  <div className="dropdown-divider"></div>
-                </>
-              )}
-
-              <button
-                className="dropdown-item"
-                onClick={() => {
-                  setShowDropdown(false);
-                  navigate("/terms");
-                }}
-              >
-                📄 Termos de Uso
-              </button>
-
-              <button
-                className="dropdown-item"
-                onClick={() => {
-                  setShowDropdown(false);
-                  navigate("/privacy");
-                }}
-              >
-                🔒 Privacidade
-              </button>
-
-              <div className="dropdown-divider"></div>
-
-              <button
-                className="dropdown-item logout"
-                onClick={() => {
-                  setShowDropdown(false);
-                  handleLogout();
-                }}
-              >
-                🚪 Sair
-              </button>
-            </div>
-          )}
-        </div>
+        )}
       </div>
     </nav>
   );

@@ -53,7 +53,7 @@ function LandingPage() {
       name: 'Básico',
       price: '15',
       period: '/mês',
-      clientLimit: 'Até 20 clientes',
+      clientLimit: 'Até 10 clientes',
       features: [
         '✅ Dashboard com estatísticas',
         '✅ Gestão de clientes',
@@ -70,9 +70,9 @@ function LandingPage() {
     },
     {
       name: 'Pro',
-      price: '30',
+      price: '25',
       period: '/mês',
-      clientLimit: 'Clientes ilimitados',
+      clientLimit: 'Até 30 clientes',
       features: [
         '✅ Tudo do Básico',
         '✅ Pacotes de treino',
@@ -89,7 +89,7 @@ function LandingPage() {
     },
     {
       name: 'Premium',
-      price: '50',
+      price: '40',
       period: '/mês',
       clientLimit: 'Clientes ilimitados',
       features: [
@@ -164,6 +164,13 @@ function LandingPage() {
     navigate('/register');
   };
 
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -171,6 +178,97 @@ function LandingPage() {
       color: '#fff',
       overflowX: 'hidden'
     }}>
+      {/* Navbar */}
+      <nav style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        background: 'rgba(10, 10, 10, 0.95)',
+        backdropFilter: 'blur(10px)',
+        borderBottom: '1px solid rgba(220, 20, 60, 0.2)',
+        padding: '1rem 2rem',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        zIndex: 1000,
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)'
+      }}>
+        <div style={{
+          fontSize: '1.5rem',
+          fontWeight: 800,
+          color: '#dc143c',
+          cursor: 'pointer'
+        }} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          💪 MyFitness
+        </div>
+        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+          <button
+            onClick={() => scrollToSection('pricing')}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'rgba(255, 255, 255, 0.9)',
+              fontSize: '1rem',
+              fontWeight: 500,
+              cursor: 'pointer',
+              transition: 'color 0.3s ease'
+            }}
+            onMouseOver={(e) => e.target.style.color = '#dc143c'}
+            onMouseOut={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.9)'}
+          >
+            Preços
+          </button>
+          <button
+            onClick={() => navigate('/login')}
+            style={{
+              background: 'none',
+              border: '1px solid rgba(220, 20, 60, 0.5)',
+              color: '#dc143c',
+              padding: '0.5rem 1.5rem',
+              borderRadius: '8px',
+              fontSize: '1rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.3s ease'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.background = 'rgba(220, 20, 60, 0.1)';
+            }}
+            onMouseOut={(e) => {
+              e.target.style.background = 'none';
+            }}
+          >
+            Entrar
+          </button>
+          <button
+            onClick={() => navigate('/register')}
+            style={{
+              background: 'linear-gradient(135deg, #dc143c, #ff0000)',
+              border: 'none',
+              color: 'white',
+              padding: '0.5rem 1.5rem',
+              borderRadius: '8px',
+              fontSize: '1rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              boxShadow: '0 4px 15px rgba(220, 20, 60, 0.3)'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.transform = 'translateY(-2px)';
+              e.target.style.boxShadow = '0 6px 20px rgba(220, 20, 60, 0.4)';
+            }}
+            onMouseOut={(e) => {
+              e.target.style.transform = 'translateY(0)';
+              e.target.style.boxShadow = '0 4px 15px rgba(220, 20, 60, 0.3)';
+            }}
+          >
+            Começar Grátis
+          </button>
+        </div>
+      </nav>
+
       {/* Hero Section */}
       <section style={{
         padding: '100px 20px 80px',
@@ -439,7 +537,7 @@ function LandingPage() {
       </section>
 
       {/* Pricing Section */}
-      <section style={{ padding: '80px 20px', background: 'rgba(0,0,0,0.3)' }}>
+      <section id="pricing" style={{ padding: '80px 20px', background: 'rgba(0,0,0,0.3)' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <h2 style={{
             fontSize: '48px',

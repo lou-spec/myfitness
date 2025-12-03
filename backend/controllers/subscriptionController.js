@@ -9,8 +9,11 @@ export const createCheckoutSession = async (req, res) => {
     const { plan } = req.body; // 'basic', 'pro', ou 'premium'
     const userId = req.user.id;
 
+    console.log('🔵 Criar checkout session - Plan:', plan, 'User:', userId);
+
     const user = await User.findById(userId);
     if (!user) {
+      console.log('❌ Utilizador não encontrado:', userId);
       return res.status(404).json({ message: 'Utilizador não encontrado' });
     }
 
@@ -21,10 +24,22 @@ export const createCheckoutSession = async (req, res) => {
       premium: process.env.STRIPE_PREMIUM_PRICE_ID
     };
 
+    console.log('🔵 Price IDs configurados:', {
+      basic: priceIds.basic ? 'Definido' : '❌ NÃO DEFINIDO',
+      pro: priceIds.pro ? 'Definido' : '❌ NÃO DEFINIDO',
+      premium: priceIds.premium ? 'Definido' : '❌ NÃO DEFINIDO'
+    });
+
     const priceId = priceIds[plan];
     if (!priceId) {
-      return res.status(400).json({ message: 'Plano inválido' });
+      console.log('❌ Price ID não encontrado para o plano:', plan);
+      return res.status(400).json({ 
+        message: `Plano inválido ou Price ID não configurado para: ${plan}`,
+        debug: `Verifique a variável de ambiente STRIPE_${plan.toUpperCase()}_PRICE_ID no Render`
+      });
     }
+
+    console.log('✅ Price ID selecionado:', priceId);
 
     // Criar sessão de checkout
     const session = await stripe.checkout.sessions.create({

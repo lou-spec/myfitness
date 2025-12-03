@@ -38,7 +38,8 @@ function Navbar({ user, setUser }) {
   return (
     <nav className="navbar">
       <div className="navbar-logo" onClick={() => navigate("/dashboard")}>
-        💪 MyFitness
+        <img src="/myfitness_logo.png" alt="MyFitness" style={{ height: '40px', marginRight: '10px' }} />
+        MyFitness
       </div>
 
       <ul className="navbar-nav">

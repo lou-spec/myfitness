@@ -198,9 +198,13 @@ function LandingPage() {
           fontSize: '1.5rem',
           fontWeight: 800,
           color: '#dc143c',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px'
         }} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          💪 MyFitness
+          <img src="/myfitness_logo.png" alt="MyFitness" style={{ height: '40px' }} />
+          MyFitness
         </div>
         <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
           <button

@@ -71,3 +71,881 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(220, 20, 60, 0.7);
 }
+
+/* ============================================
+   NAVBAR STYLES
+   ============================================ */
+
+.navbar {
+  background: linear-gradient(135deg, rgba(15, 15, 15, 0.95), rgba(30, 30, 30, 0.95));
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #dc143c;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.navbar-logo:hover {
+  transform: scale(1.05);
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+}
+
+.navbar-nav a {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.navbar-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #dc143c;
+  transition: width 0.3s ease;
+}
+
+.navbar-nav a:hover {
+  color: #dc143c;
+}
+
+.navbar-nav a:hover::after {
+  width: 100%;
+}
+
+.navbar-user {
+  position: relative;
+}
+
+.navbar-user-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.navbar-user-button:hover {
+  background: rgba(220, 20, 60, 0.1);
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #dc143c;
+}
+
+.avatar-initials {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #dc143c, #ff0000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: white;
+  border: 2px solid #dc143c;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.98), rgba(30, 30, 30, 0.98));
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(220, 20, 60, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  min-width: 220px;
+  overflow: hidden;
+  animation: dropdownFade 0.2s ease;
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-item {
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  border: none;
+  background: none;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.dropdown-item:hover {
+  background: rgba(220, 20, 60, 0.15);
+  color: #dc143c;
+  padding-left: 1.5rem;
+}
+
+.dropdown-item:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================
+   SUBSCRIPTION PAGE STYLES
+   ============================================ */
+
+.subscription-page {
+  min-height: 100vh;
+  padding: 2rem;
+  background: radial-gradient(circle at top, rgba(220, 20, 60, 0.05), transparent 70%);
+}
+
+.subscription-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.subscription-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.subscription-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #dc143c, #ff0000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.current-plan-section {
+  background: linear-gradient(135deg, rgba(220, 20, 60, 0.1), rgba(255, 0, 0, 0.05));
+  border: 2px solid rgba(220, 20, 60, 0.3);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+}
+
+.current-plan-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.plan-info h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.plan-status {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.plan-status.active {
+  background: rgba(0, 255, 0, 0.2);
+  color: #00ff00;
+  border: 1px solid rgba(0, 255, 0, 0.3);
+}
+
+.plan-status.trial {
+  background: rgba(255, 165, 0, 0.2);
+  color: #ffa500;
+  border: 1px solid rgba(255, 165, 0, 0.3);
+}
+
+.plan-status.cancelled {
+  background: rgba(255, 0, 0, 0.2);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+.plan-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-portal, .btn-cancel {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-portal {
+  background: linear-gradient(135deg, #dc143c, #ff0000);
+  color: white;
+}
+
+.btn-portal:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
+}
+
+.btn-cancel {
+  background: rgba(255, 0, 0, 0.1);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+.btn-cancel:hover {
+  background: rgba(255, 0, 0, 0.2);
+}
+
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.plan-card {
+  background: linear-gradient(135deg, rgba(15, 15, 15, 0.95), rgba(30, 30, 30, 0.95));
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.plan-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(220, 20, 60, 0.5);
+  box-shadow: 0 10px 40px rgba(220, 20, 60, 0.3);
+}
+
+.plan-card.popular {
+  border-color: #dc143c;
+  box-shadow: 0 0 30px rgba(220, 20, 60, 0.2);
+}
+
+.plan-card.popular::before {
+  content: '⭐ POPULAR';
+  position: absolute;
+  top: 1rem;
+  right: -2rem;
+  background: linear-gradient(135deg, #dc143c, #ff0000);
+  color: white;
+  padding: 0.4rem 3rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transform: rotate(45deg);
+}
+
+.plan-card.current-plan {
+  border-color: #00ff00;
+  background: linear-gradient(135deg, rgba(0, 255, 0, 0.05), rgba(15, 15, 15, 0.95));
+}
+
+.plan-name {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #dc143c;
+}
+
+.plan-price {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.plan-price span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.plan-features {
+  list-style: none;
+  margin: 2rem 0;
+}
+
+.plan-features li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-select-plan {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #dc143c, #ff0000);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-select-plan:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
+}
+
+.btn-select-plan:disabled {
+  background: rgba(100, 100, 100, 0.3);
+  cursor: not-allowed;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.btn-select-plan.downgrade {
+  background: linear-gradient(135deg, #555, #777);
+}
+
+/* ============================================
+   LEGAL PAGES STYLES (Terms, Privacy)
+   ============================================ */
+
+.legal-page {
+  min-height: 100vh;
+  padding: 2rem;
+  background: radial-gradient(circle at top, rgba(220, 20, 60, 0.03), transparent 60%);
+}
+
+.legal-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, rgba(15, 15, 15, 0.95), rgba(25, 25, 25, 0.95));
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(220, 20, 60, 0.2);
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.legal-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #dc143c, #ff0000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.last-updated {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+}
+
+.legal-container section {
+  margin: 2.5rem 0;
+}
+
+.legal-container h2 {
+  font-size: 1.6rem;
+  color: #dc143c;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+.legal-container h3 {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 1.5rem 0 0.75rem;
+}
+
+.legal-container p {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.legal-container ul {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.legal-container li {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0.75rem 0;
+  line-height: 1.7;
+}
+
+.legal-container a {
+  color: #dc143c;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.legal-container a:hover {
+  color: #ff0000;
+}
+
+.back-button-container {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.btn-back {
+  padding: 0.75rem 2rem;
+  background: rgba(220, 20, 60, 0.1);
+  color: #dc143c;
+  border: 1px solid rgba(220, 20, 60, 0.3);
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+  background: rgba(220, 20, 60, 0.2);
+  transform: translateX(-5px);
+}
+
+/* ============================================
+   FAQ PAGE STYLES
+   ============================================ */
+
+.faq-page {
+  min-height: 100vh;
+  padding: 2rem;
+  background: radial-gradient(circle at top, rgba(220, 20, 60, 0.05), transparent 70%);
+}
+
+.faq-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.faq-container h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #dc143c, #ff0000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.faq-subtitle {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 3rem;
+  font-size: 1.1rem;
+}
+
+.faq-category {
+  margin-bottom: 3rem;
+}
+
+.category-title {
+  font-size: 1.8rem;
+  color: #dc143c;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid rgba(220, 20, 60, 0.3);
+}
+
+.faq-item {
+  background: linear-gradient(135deg, rgba(15, 15, 15, 0.95), rgba(25, 25, 25, 0.95));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+  border-color: rgba(220, 20, 60, 0.4);
+  box-shadow: 0 4px 15px rgba(220, 20, 60, 0.2);
+}
+
+.faq-question {
+  width: 100%;
+  padding: 1.25rem 1.5rem;
+  background: none;
+  border: none;
+  color: white;
+  text-align: left;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.faq-question:hover {
+  color: #dc143c;
+}
+
+.faq-question.open {
+  color: #dc143c;
+}
+
+.faq-icon {
+  font-size: 1.5rem;
+  font-weight: 300;
+  min-width: 30px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.faq-question.open .faq-icon {
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  padding: 0 1.5rem 1.25rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.7;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.faq-footer {
+  background: linear-gradient(135deg, rgba(220, 20, 60, 0.1), rgba(255, 0, 0, 0.05));
+  border: 2px solid rgba(220, 20, 60, 0.3);
+  border-radius: 16px;
+  padding: 2.5rem;
+  text-align: center;
+  margin: 3rem 0;
+}
+
+.faq-footer h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.faq-footer p {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 1.5rem;
+}
+
+.btn-contact {
+  padding: 1rem 2.5rem;
+  background: linear-gradient(135deg, #dc143c, #ff0000);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-contact:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
+}
+
+/* ============================================
+   CONTACT PAGE STYLES
+   ============================================ */
+
+.contact-page {
+  min-height: 100vh;
+  padding: 2rem;
+  background: radial-gradient(circle at top, rgba(220, 20, 60, 0.05), transparent 70%);
+}
+
+.contact-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contact-container h1 {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #dc143c, #ff0000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.contact-subtitle {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 3rem;
+  font-size: 1.1rem;
+}
+
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.contact-form-section,
+.contact-info-section {
+  background: linear-gradient(135deg, rgba(15, 15, 15, 0.95), rgba(25, 25, 25, 0.95));
+  border: 1px solid rgba(220, 20, 60, 0.2);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.contact-form-section h2,
+.contact-info-section h2 {
+  font-size: 1.6rem;
+  color: #dc143c;
+  margin-bottom: 1.5rem;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.875rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #dc143c;
+  box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.status-message {
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  font-weight: 500;
+}
+
+.status-message.success {
+  background: rgba(0, 255, 0, 0.1);
+  border: 1px solid rgba(0, 255, 0, 0.3);
+  color: #00ff00;
+}
+
+.status-message.error {
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  color: #ff6b6b;
+}
+
+.btn-submit {
+  padding: 1rem;
+  background: linear-gradient(135deg, #dc143c, #ff0000);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
+}
+
+.btn-submit:disabled {
+  background: rgba(100, 100, 100, 0.3);
+  cursor: not-allowed;
+}
+
+.contact-method {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.contact-method:last-of-type {
+  border-bottom: none;
+}
+
+.contact-icon {
+  font-size: 2rem;
+  min-width: 50px;
+  text-align: center;
+}
+
+.contact-details h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.contact-details p {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 0.25rem;
+}
+
+.contact-note {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.business-hours {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: rgba(220, 20, 60, 0.05);
+  border: 1px solid rgba(220, 20, 60, 0.2);
+  border-radius: 12px;
+}
+
+.business-hours h3 {
+  font-size: 1.2rem;
+  color: #dc143c;
+  margin-bottom: 1rem;
+}
+
+.business-hours ul {
+  list-style: none;
+  margin-bottom: 1rem;
+}
+
+.business-hours li {
+  padding: 0.5rem 0;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.business-hours .note {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+}
+
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .subscription-page,
+  .legal-page,
+  .faq-page,
+  .contact-page {
+    padding: 1rem;
+  }
+
+  .legal-container {
+    padding: 1.5rem;
+  }
+
+  .plans-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .current-plan-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .plan-actions {
+    width: 100%;
+  }
+
+  .btn-portal,
+  .btn-cancel {
+    flex: 1;
+  }
+}

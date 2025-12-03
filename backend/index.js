@@ -9,6 +9,7 @@ import appointmentRoutes from "./routes/appointmentRoutes.js";
 import packageRoutes from "./routes/packageRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import emailRoutes from "./routes/emailRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
 import { startReminderScheduler } from "./utils/reminderScheduler.js";
 import startTrialCheckScheduler from "./services/trialCheckScheduler.js";
 
@@ -34,6 +35,7 @@ app.use("/api/appointments", appointmentRoutes);
 app.use("/api/packages", packageRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/email", emailRoutes);
+app.use("/api/contact", contactRoutes);
 
 // Rota especial para webhook do Stripe (antes do express.json())
 import subscriptionRoutes from "./routes/subscriptionRoutes.js";
@@ -47,10 +49,17 @@ app.get("/", (req, res) => {
 // Conexão MongoDB Atlas
 const connectDB = async () => {
   try {
-    const mongoUri = process.env.MONGO_URI || process.env.MONGO_URL || process.env.MONGODB_URI;
+    let mongoUri = process.env.MONGO_URI || process.env.MONGO_URL || process.env.MONGODB_URI;
     
     if (!mongoUri) {
       throw new Error("❌ MONGO_URI não definida! Configure a variável de ambiente.");
+    }
+    
+    // Se a URI não tem database name, adiciona 'test'
+    if (!mongoUri.includes('mongodb.net/') || mongoUri.match(/mongodb\.net\/\?/)) {
+      mongoUri = mongoUri.replace('mongodb.net/?', 'mongodb.net/test?');
+      mongoUri = mongoUri.replace('mongodb.net/', 'mongodb.net/test');
+      console.log("⚠️ Database não especificada na URI, usando 'test' como padrão");
     }
     
     console.log("🔄 Conectando ao MongoDB...");

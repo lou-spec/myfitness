@@ -26,7 +26,7 @@ export const PLANS = {
   },
   basic: {
     name: 'Básico',
-    price: 15,
+    price: 15, // €15/mês
     stripe_price_id: process.env.STRIPE_BASIC_PRICE_ID,
     features: {
       max_clients: 20,
@@ -50,7 +50,7 @@ export const PLANS = {
   },
   pro: {
     name: 'Pro',
-    price: 30,
+    price: 25, // €25/mês
     stripe_price_id: process.env.STRIPE_PRO_PRICE_ID,
     features: {
       max_clients: -1, // unlimited
@@ -74,7 +74,7 @@ export const PLANS = {
   },
   premium: {
     name: 'Premium',
-    price: 50,
+    price: 40, // €40/mês
     stripe_price_id: process.env.STRIPE_PREMIUM_PRICE_ID,
     features: {
       max_clients: -1, // unlimited

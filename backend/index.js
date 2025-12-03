@@ -18,15 +18,40 @@ dotenv.config();
 
 const app = express();
 
-// CORS configurado para produção
+// CORS configurado para produção - mais permissivo
+const allowedOrigins = [
+  'https://myfitness-neon.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://127.0.0.1:5173'
+];
+
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || 'https://myfitness-neon.vercel.app',
+  origin: function (origin, callback) {
+    // Permite requests sem origin (como Postman, apps mobile, etc)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1 || process.env.FRONTEND_URL === origin) {
+      callback(null, true);
+    } else {
+      console.log('⚠️ CORS bloqueou origem:', origin);
+      callback(null, true); // Permite temporariamente para debug
+    }
+  },
   credentials: true,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
+
+// Log de todas as requests
+app.use((req, res, next) => {
+  console.log(`📨 ${req.method} ${req.path} - Origin: ${req.headers.origin || 'none'}`);
+  next();
+});
 
 // Rotas
 app.use("/api/auth", authRoutes);

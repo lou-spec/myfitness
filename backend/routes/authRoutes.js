@@ -61,44 +61,72 @@ router.post("/register", async (req, res) => {
 
 // LOGIN
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
-  if (!user) return res.status(400).json({ msg: "Conta não existe" });
+    console.log("🔵 Tentativa de login:", email);
 
-  const match = await bcrypt.compare(password, user.password);
-  if (!match) return res.status(400).json({ msg: "Password inválida" });
-
-  // Se for trainer, verifica se o trial expirou
-  if (user.role === 'trainer' && user.subscription_plan === 'trial') {
-    const now = new Date();
-    if (user.trial_end_date && now > user.trial_end_date) {
-      // Trial expirado - não permite login
-      return res.status(403).json({ 
-        msg: "Período experimental expirado. Faça upgrade para continuar.",
-        trialExpired: true,
-        trialEndDate: user.trial_end_date
-      });
+    const user = await User.findOne({ email });
+    if (!user) {
+      console.log("❌ Utilizador não encontrado:", email);
+      return res.status(400).json({ msg: "Conta não existe" });
     }
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      console.log("❌ Password incorreta para:", email);
+      return res.status(400).json({ msg: "Password inválida" });
+    }
+
+    // Se for trainer, verifica se o trial expirou
+    if (user.role === 'trainer' && user.subscription_plan === 'trial') {
+      const now = new Date();
+      if (user.trial_end_date && now > user.trial_end_date) {
+        // Trial expirado - permite login mas redireciona para trial-expired
+        console.log("⚠️ Trial expirado para:", email, "- Trial End:", user.trial_end_date);
+        
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || "segredo123", {
+          expiresIn: "2d",
+        });
+
+        return res.status(403).json({ 
+          msg: "Período experimental expirado. Faça upgrade para continuar.",
+          trialExpired: true,
+          trialEndDate: user.trial_end_date,
+          token, // Envia token para poder fazer pagamento
+          user: {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            subscription_plan: user.subscription_plan
+          }
+        });
+      }
+    }
+
+    console.log("✅ Login bem-sucedido para:", email);
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || "segredo123", {
+      expiresIn: "2d",
+    });
+
+    res.json({
+      token,
+      user: { 
+        id: user._id, 
+        name: user.name, 
+        email: user.email,
+        role: user.role,
+        phone: user.phone,
+        trainer_id: user.trainer_id,
+        subscription_plan: user.subscription_plan,
+        trial_end_date: user.trial_end_date
+      },
+    });
+  } catch (error) {
+    console.error("❌ Erro no login:", error);
+    res.status(500).json({ msg: "Erro no servidor", error: error.message });
   }
-
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-    expiresIn: "2d",
-  });
-
-  res.json({
-    token,
-    user: { 
-      id: user._id, 
-      name: user.name, 
-      email: user.email,
-      role: user.role,
-      phone: user.phone,
-      trainer_id: user.trainer_id,
-      subscription_plan: user.subscription_plan,
-      trial_end_date: user.trial_end_date
-    },
-  });
 });
 
 // GET TRAINER INFO

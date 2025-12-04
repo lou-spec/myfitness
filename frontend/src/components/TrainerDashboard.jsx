@@ -7,10 +7,31 @@ import PackageForm from "./PackageForm";
 import WorkoutNotesModal from "./WorkoutNotesModal";
 import ProfileEditModal from "./ProfileEditModal";
 import ClientProfileSection from "./ClientProfileSection";
+import VideoUpload from "./VideoUpload";
+import ChatRoom from "./ChatRoom";
 
 function TrainerDashboard({ user, setUser }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [upgradeFeature, setUpgradeFeature] = useState("");
+
+  // Helper para verificar se user tem acesso a uma feature
+  const hasFeature = (feature) => {
+    const plan = user?.subscription_plan || 'trial';
+    const features = {
+      trial: ['dashboard', 'basic_notifications', 'public_profile'],
+      basic: ['dashboard', 'basic_notifications', 'public_profile'],
+      pro: ['dashboard', 'basic_notifications', 'public_profile', 'packages', 'payment_management', 'detailed_stats', 'feedback_system'],
+      premium: ['dashboard', 'basic_notifications', 'public_profile', 'packages', 'payment_management', 'detailed_stats', 'feedback_system', 'video_upload', 'integrated_chat', 'advanced_analytics', 'custom_branding']
+    };
+    return features[plan]?.includes(feature) || false;
+  };
+
+  const handleUpgradeClick = (feature) => {
+    setUpgradeFeature(feature);
+    setShowUpgradeModal(true);
+  };
   const [stats, setStats] = useState({
     totalClients: 0,
     appointmentsThisMonth: 0,
@@ -326,16 +347,56 @@ function TrainerDashboard({ user, setUser }) {
             📅 Agendamentos
           </button>
           <button
-            className={`tab ${activeTab === "packages" ? "active" : ""}`}
-            onClick={() => setActiveTab("packages")}
+            className={`tab ${activeTab === "packages" ? "active" : ""} ${!hasFeature('packages') ? 'locked' : ''}`}
+            onClick={() => {
+              if (!hasFeature('packages')) {
+                handleUpgradeClick('Pacotes de Treino');
+              } else {
+                setActiveTab("packages");
+              }
+            }}
+            title={!hasFeature('packages') ? '🔒 Disponível no plano Pro' : ''}
           >
-            📦 Pacotes
+            📦 Pacotes {!hasFeature('packages') && '🔒'}
           </button>
           <button
-            className={`tab ${activeTab === "payments" ? "active" : ""}`}
-            onClick={() => setActiveTab("payments")}
+            className={`tab ${activeTab === "payments" ? "active" : ""} ${!hasFeature('payment_management') ? 'locked' : ''}`}
+            onClick={() => {
+              if (!hasFeature('payment_management')) {
+                handleUpgradeClick('Gestão de Pagamentos');
+              } else {
+                setActiveTab("payments");
+              }
+            }}
+            title={!hasFeature('payment_management') ? '🔒 Disponível no plano Pro' : ''}
           >
-            💰 Pagamentos
+            💰 Pagamentos {!hasFeature('payment_management') && '🔒'}
+          </button>
+          <button
+            className={`tab ${activeTab === "videos" ? "active" : ""} ${!hasFeature('video_upload') ? 'locked' : ''}`}
+            onClick={() => {
+              if (!hasFeature('video_upload')) {
+                handleUpgradeClick('Upload de Vídeos');
+              } else {
+                setActiveTab("videos");
+              }
+            }}
+            title={!hasFeature('video_upload') ? '🔒 Disponível no plano Premium' : ''}
+          >
+            📹 Vídeos {!hasFeature('video_upload') && '🔒'}
+          </button>
+          <button
+            className={`tab ${activeTab === "chat" ? "active" : ""} ${!hasFeature('integrated_chat') ? 'locked' : ''}`}
+            onClick={() => {
+              if (!hasFeature('integrated_chat')) {
+                handleUpgradeClick('Chat em Tempo Real');
+              } else {
+                setActiveTab("chat");
+              }
+            }}
+            title={!hasFeature('integrated_chat') ? '🔒 Disponível no plano Premium' : ''}
+          >
+            💬 Chat {!hasFeature('integrated_chat') && '🔒'}
           </button>
           <button
             className={`tab ${activeTab === "profile" ? "active" : ""}`}
@@ -634,6 +695,14 @@ function TrainerDashboard({ user, setUser }) {
           </div>
         )}
 
+        {activeTab === "videos" && hasFeature('video_upload') && (
+          <VideoUpload user={user} />
+        )}
+
+        {activeTab === "chat" && hasFeature('integrated_chat') && (
+          <ChatRoom user={user} />
+        )}
+
         {activeTab === "profile" && (
           <div className="section">
             <h3>⚙️ Meu Perfil</h3>
@@ -752,6 +821,52 @@ function TrainerDashboard({ user, setUser }) {
               setSelectedClient(null);
             }} 
           />
+        )}
+
+        {showUpgradeModal && (
+          <div className="modal-overlay" onClick={() => setShowUpgradeModal(false)}>
+            <div className="modal upgrade-modal" onClick={(e) => e.stopPropagation()}>
+              <h2>🔒 Funcionalidade Premium</h2>
+              <p><strong>{upgradeFeature}</strong> está disponível nos planos Pro e Premium.</p>
+              
+              <div className="upgrade-plans">
+                <div className="upgrade-plan">
+                  <h3>Pro</h3>
+                  <p className="price">€25/mês</p>
+                  <ul>
+                    <li>✅ Até 30 clientes</li>
+                    <li>✅ Pacotes de treino</li>
+                    <li>✅ Gestão de pagamentos</li>
+                    <li>✅ Estatísticas detalhadas</li>
+                    <li>✅ Sistema de avaliações</li>
+                  </ul>
+                  <button className="btn-primary" onClick={() => navigate('/trial-expired')}>
+                    Fazer Upgrade
+                  </button>
+                </div>
+                
+                <div className="upgrade-plan premium">
+                  <div className="badge">Mais Popular</div>
+                  <h3>Premium</h3>
+                  <p className="price">€40/mês</p>
+                  <ul>
+                    <li>✅ Clientes ilimitados</li>
+                    <li>✅ Tudo do Pro</li>
+                    <li>✅ Upload de vídeos</li>
+                    <li>✅ Chat em tempo real</li>
+                    <li>✅ Analytics avançados</li>
+                  </ul>
+                  <button className="btn-primary premium-btn" onClick={() => navigate('/trial-expired')}>
+                    Fazer Upgrade Premium
+                  </button>
+                </div>
+              </div>
+              
+              <button className="btn-secondary" onClick={() => setShowUpgradeModal(false)}>
+                Fechar
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>

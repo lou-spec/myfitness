@@ -246,7 +246,7 @@ function ClientDashboard({ user, setUser }) {
                     />
                   )}
                   <div>
-                    <h4 style={{ fontSize: "20px", marginBottom: "8px" }}>{trainer.name}</h4>
+                    <h4 style={{ fontSize: "20px", marginBottom: "8px", color: "#DC143C" }}>{trainer.name}</h4>
                     <p style={{ opacity: 0.7, fontSize: "14px" }}>📧 {trainer.email}</p>
                     {trainer.phone && <p style={{ opacity: 0.7, fontSize: "14px" }}>📱 {trainer.phone}</p>}
                     {trainer.city && <p style={{ opacity: 0.7, fontSize: "14px" }}>📍 {trainer.city}</p>}

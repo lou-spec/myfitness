@@ -88,25 +88,6 @@ function TrialExpired() {
     navigate('/');
   };
 
-  const checkServerConfig = async () => {
-    try {
-      const res = await fetch('https://myfitness-pkft.onrender.com/api/debug/check-env');
-      const data = await res.json();
-      
-      const missingVars = Object.entries(data.environment)
-        .filter(([key, value]) => value.includes('❌'))
-        .map(([key]) => key);
-      
-      if (missingVars.length > 0) {
-        alert(`⚠️ Variáveis em falta:\n\n${missingVars.join('\n')}`);
-      } else {
-        alert('✅ Configuração OK!');
-      }
-    } catch (error) {
-      alert('Erro ao verificar configuração');
-    }
-  };
-
   return (
     <div style={{
       minHeight: '100vh',
@@ -294,40 +275,17 @@ function TrialExpired() {
         </div>
 
         {/* Footer */}
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginBottom: '20px' }}>
-            <button
-              onClick={checkServerConfig}
-              style={{
-                padding: '12px 30px',
-                fontSize: '16px',
-                background: 'rgba(220, 20, 60, 0.1)',
-                border: '1px solid rgba(220, 20, 60, 0.3)',
-                borderRadius: '8px',
-                color: '#dc143c',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseOver={(e) => {
-                e.target.style.background = 'rgba(220, 20, 60, 0.2)';
-              }}
-              onMouseOut={(e) => {
-                e.target.style.background = 'rgba(220, 20, 60, 0.1)';
-              }}
-            >
-              🔧 Verificar Configuração
-            </button>
-
-            <button
-              onClick={handleBack}
-              style={{
-                padding: '12px 30px',
-                fontSize: '16px',
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: '8px',
-                color: 'rgba(255,255,255,0.6)',
-                cursor: 'pointer',
+        <div style={{ textAlign: 'center', marginTop: '30px' }}>
+          <button
+            onClick={handleBack}
+            style={{
+              padding: '12px 30px',
+              fontSize: '16px',
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.2)',
+              borderRadius: '8px',
+              color: 'rgba(255,255,255,0.6)',
+              cursor: 'pointer',
                 transition: 'all 0.3s ease'
               }}
               onMouseOver={(e) => {

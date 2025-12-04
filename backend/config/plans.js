@@ -29,17 +29,18 @@ export const PLANS = {
     price: 15, // €15/mês
     stripe_price_id: process.env.STRIPE_BASIC_PRICE_ID,
     features: {
-      max_clients: 20,
+      max_clients: 10,
       unlimited_appointments: true,
       dashboard: true,
       basic_notifications: true,
-      packages: true,
+      packages: false,
       public_profile: true,
       advanced_packages: false,
       detailed_stats: false,
       advanced_notifications: false,
       feedback_system: false,
       public_store: false,
+      payment_management: false,
       video_upload: false,
       integrated_chat: false,
       priority_support: false,
@@ -53,7 +54,7 @@ export const PLANS = {
     price: 25, // €25/mês
     stripe_price_id: process.env.STRIPE_PRO_PRICE_ID,
     features: {
-      max_clients: -1, // unlimited
+      max_clients: 30,
       unlimited_appointments: true,
       dashboard: true,
       basic_notifications: true,
@@ -64,9 +65,10 @@ export const PLANS = {
       advanced_notifications: true,
       feedback_system: true,
       public_store: true,
+      payment_management: true,
       video_upload: false,
       integrated_chat: false,
-      priority_support: false,
+      priority_support: true,
       auto_promotions: false,
       custom_branding: false,
       visual_customization: false
@@ -88,12 +90,14 @@ export const PLANS = {
       advanced_notifications: true,
       feedback_system: true,
       public_store: true,
+      payment_management: true,
       video_upload: true,
       integrated_chat: true,
       priority_support: true,
       auto_promotions: true,
       custom_branding: true,
-      visual_customization: true
+      visual_customization: true,
+      advanced_analytics: true
     }
   }
 };

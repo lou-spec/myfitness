@@ -1,6 +1,6 @@
 import express from "express";
 import Video from "../models/Video.js";
-import auth from "../middleware/auth.js";
+import auth from "../middleware/authMiddleware.js";
 import { checkFeature } from "../middleware/planMiddleware.js";
 
 const router = express.Router();

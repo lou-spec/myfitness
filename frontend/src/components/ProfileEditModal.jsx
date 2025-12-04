@@ -53,7 +53,7 @@ function ProfileEditModal({ user, onClose, onSuccess }) {
         <h2>✏️ Editar Perfil</h2>
         
         <div className="form-group">
-          <label>Nome</label>
+          <label style={{ color: "#fff", fontWeight: "600", marginBottom: "8px", display: "block" }}>Nome</label>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -61,7 +61,7 @@ function ProfileEditModal({ user, onClose, onSuccess }) {
         </div>
 
         <div className="form-group">
-          <label>Telemóvel</label>
+          <label style={{ color: "#fff", fontWeight: "600", marginBottom: "8px", display: "block" }}>Telemóvel</label>
           <input
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
@@ -70,7 +70,7 @@ function ProfileEditModal({ user, onClose, onSuccess }) {
         </div>
 
         <div className="form-group">
-          <label>Cidade</label>
+          <label style={{ color: "#fff", fontWeight: "600", marginBottom: "8px", display: "block" }}>Cidade</label>
           <input
             value={city}
             onChange={(e) => setCity(e.target.value)}
@@ -79,7 +79,7 @@ function ProfileEditModal({ user, onClose, onSuccess }) {
         </div>
 
         <div className="form-group">
-          <label>URL da Foto</label>
+          <label style={{ color: "#fff", fontWeight: "600", marginBottom: "8px", display: "block" }}>URL da Foto</label>
           <input
             value={photoUrl}
             onChange={(e) => setPhotoUrl(e.target.value)}
@@ -88,7 +88,7 @@ function ProfileEditModal({ user, onClose, onSuccess }) {
         </div>
 
         <div className="form-group">
-          <label>Bio</label>
+          <label style={{ color: "#fff", fontWeight: "600", marginBottom: "8px", display: "block" }}>Bio</label>
           <textarea
             value={bio}
             onChange={(e) => setBio(e.target.value)}
@@ -98,7 +98,7 @@ function ProfileEditModal({ user, onClose, onSuccess }) {
         </div>
 
         <div className="form-group">
-          <label>Especialidades (separadas por vírgula)</label>
+          <label style={{ color: "#fff", fontWeight: "600", marginBottom: "8px", display: "block" }}>Especialidades (separadas por vírgula)</label>
           <input
             value={specialties}
             onChange={(e) => setSpecialties(e.target.value)}
@@ -107,7 +107,7 @@ function ProfileEditModal({ user, onClose, onSuccess }) {
         </div>
 
         <div className="form-group">
-          <label>Preço por Sessão (€)</label>
+          <label style={{ color: "#fff", fontWeight: "600", marginBottom: "8px", display: "block" }}>Preço por Sessão (€)</label>
           <input
             type="number"
             value={pricePerSession}

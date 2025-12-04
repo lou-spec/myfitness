@@ -750,7 +750,7 @@ function TrainerDashboard({ user, setUser }) {
           <ClientForm
             onClose={() => setShowClientForm(false)}
             onSuccess={() => {
-              fetchClients();
+              fetchAssociatedClients();
               fetchStats();
             }}
           />

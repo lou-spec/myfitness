@@ -56,6 +56,16 @@ function ClientDashboard({ user, setUser }) {
       const res = await fetch(`https://myfitness-pkft.onrender.com/api/appointments/my`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      
+      // Verificar se o trainer está inativo
+      if (res.status === 403) {
+        const data = await res.json();
+        if (data.trainerInactive || data.trainerTrialExpired) {
+          alert(`⚠️ ${data.message}\n\nContacta o teu personal trainer para reativar a subscrição.`);
+          return;
+        }
+      }
+      
       const data = await res.json();
       if (res.ok) {
         setAppointments(data);
@@ -82,7 +92,18 @@ function ClientDashboard({ user, setUser }) {
       const trainerId = trainer?._id || user.trainer_id;
       if (!trainerId) return;
       
-      const res = await fetch(`https://myfitness-pkft.onrender.com/api/packages/trainer/${trainerId}`);
+      const token = localStorage.getItem("token");
+      const res = await fetch(`https://myfitness-pkft.onrender.com/api/packages/trainer/${trainerId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      if (res.status === 403) {
+        const data = await res.json();
+        if (data.trainerInactive || data.trainerTrialExpired) {
+          return; // Já mostra o banner no overview, não precisa alert aqui
+        }
+      }
+      
       const data = await res.json();
       if (res.ok) setPackages(data);
     } catch (err) {
@@ -209,6 +230,26 @@ function ClientDashboard({ user, setUser }) {
                 <p style={{ opacity: 0.7, fontSize: "14px", lineHeight: "1.6", maxWidth: "500px", margin: "0 auto" }}>
                   💡 <strong>Como funciona:</strong> Um personal trainer precisa de te associar como cliente. 
                   Contacta um profissional e fornece o teu email <strong>({user.email})</strong> para que ele te possa adicionar!
+                </p>
+              </div>
+            )}
+
+            {/* Aviso se Trainer Inativo */}
+            {trainer && !trainer.subscription_active && (
+              <div 
+                className="section" 
+                style={{ 
+                  background: "linear-gradient(135deg, rgba(255, 193, 7, 0.15), rgba(255, 152, 0, 0.15))", 
+                  border: "2px solid rgba(255, 193, 7, 0.5)",
+                  textAlign: "center"
+                }}
+              >
+                <h3 style={{ fontSize: "20px", marginBottom: "12px", color: "#ffc107" }}>⚠️ Acesso Temporariamente Limitado</h3>
+                <p style={{ opacity: 0.9, fontSize: "15px", lineHeight: "1.8" }}>
+                  O teu personal trainer <strong>{trainer.name}</strong> está com a subscrição inativa.
+                </p>
+                <p style={{ opacity: 0.8, fontSize: "14px", marginTop: "12px" }}>
+                  Contacta-o para reativar e continuar a usar todas as funcionalidades.
                 </p>
               </div>
             )}

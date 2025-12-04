@@ -1,6 +1,7 @@
 import express from "express";
 import Package from "../models/Package.js";
 import authMiddleware from "../middleware/authMiddleware.js";
+import { checkClientTrainerActive } from "../middleware/checkClientAccess.js";
 
 const router = express.Router();
 
@@ -15,7 +16,8 @@ router.get("/", authMiddleware, async (req, res) => {
 });
 
 // GET packages públicos de um trainer (com dados do trainer)
-router.get("/trainer/:trainerId", async (req, res) => {
+// Se for cliente, verifica se o trainer está ativo antes de mostrar
+router.get("/trainer/:trainerId", authMiddleware, checkClientTrainerActive, async (req, res) => {
   try {
     const packages = await Package.find({ 
       trainer_id: req.params.trainerId, 

@@ -21,9 +21,6 @@ router.post("/register", async (req, res) => {
 
     const hashed = await bcrypt.hash(password, 10);
 
-    const now = new Date();
-    const trialEndDate = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000); // 14 dias
-
     const userRole = role || "trainer"; // Default é trainer
     const isTrainer = userRole === "trainer";
 
@@ -35,14 +32,18 @@ router.post("/register", async (req, res) => {
       role: userRole
     };
 
-    // Se for trainer, adiciona campos de trial
+    // Apenas trainers têm trial e subscrição
     if (isTrainer) {
+      const now = new Date();
+      const trialEndDate = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000); // 14 dias
+      
       userData.subscription_plan = "trial";
       userData.trial_start_date = now;
       userData.trial_end_date = trialEndDate;
       userData.subscription_active = true;
       userData.trial_warning_sent = false;
     }
+    // Clientes não pagam - conta gratuita permanente (sem trial/subscription)
 
     const user = await User.create(userData);
     
@@ -68,7 +69,7 @@ router.post("/login", async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(400).json({ msg: "Password inválida" });
 
-    // Se for trainer, verifica se o trial expirou
+    // Apenas trainers têm trial - clientes sempre podem fazer login
     if (user.role === 'trainer' && user.subscription_plan === 'trial') {
       const now = new Date();
       if (user.trial_end_date && now > user.trial_end_date) {

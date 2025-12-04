@@ -4,6 +4,7 @@ import Client from "../models/Client.js";
 import User from "../models/User.js";
 import auth from "../middleware/authMiddleware.js";
 import checkTrialStatus from "../middleware/checkTrialStatus.js";
+import { checkClientTrainerActive } from "../middleware/checkClientAccess.js";
 import { 
   sendAppointmentConfirmation, 
   sendCancellationEmail, 
@@ -215,7 +216,7 @@ router.get("/stats/dashboard", auth, checkTrialStatus, async (req, res) => {
 });
 
 // GET - My appointments (for clients)
-router.get("/my", auth, async (req, res) => {
+router.get("/my", auth, checkClientTrainerActive, async (req, res) => {
   try {
     const User = await import("../models/User.js");
     const user = await User.default.findById(req.user.id);
